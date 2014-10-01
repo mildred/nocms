@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Comment=
+Terminal=false
+Name=Garder la caméra Polaroid XS100 HD allumée (2)
+Exec=gnome-terminal -e "bash -c 'while true; do clear; echo Garder la caméra Polaroid allumée; date; echo /run/media/$USER/*/keep-alive; if (date >/run/media/$USER/*/keep-alive); then echo On; else echo Off; fi; sleep 1; done'"
+Type=Application
+Icon=gnome-panel-launcher
+
