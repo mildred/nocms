@@ -64,14 +64,12 @@ jQuery(function( $ ) {
   var save_button = topbar.find("button.save");
   save_button
     .click(function(){
-      stop_edit();
+      stop_edit(true);
       save_button.prepend(spinner).prop("disabled", true)
 
-      var page = $(":root").clone();
-      $(":not([data-generated='false'])", page).remove();
-      $("*", page).removeAttr("data-generated");
-      page.removeAttr("data-generated");
-      console.log(page[0].outerHTML);
+      var text = (new XMLSerializer()).serializeToString(rawdocument.documentElement);
+      var text = rawdocheader + text + rawdocfooter;
+      console.log(text);
 
       setTimeout(function(){
         alert("Document not saved, not yet implemented");
@@ -82,7 +80,7 @@ jQuery(function( $ ) {
 
   topbar.find("button.close")
     .click(function(){
-      stop_edit();
+      stop_edit(false);
       hide_edit_header();
     });
 
@@ -101,22 +99,74 @@ jQuery(function( $ ) {
     toolbar.detach();
   }
 
-  var editing;
+  var parser = new DOMParser();
+  var rawdocument;
+  var rawdocheader;
+  var rawdocfooter;
 
   function start_edit(){
     toolbar.detach();
-    editing = $('body').children().filter(":visible").filter(":not(.aloha)");
-    editing.each(function(){
-      Aloha.jQuery(this).aloha();
-    });
-    show_edit_header();
-    $(":not([data-generated])").attr("data-generated", "true")
+    var popover = $("<div>")
+      .css("position", "fixed")
+      .css("width", "50%")
+      .css("height", "50%")
+      .css("top", "25%")
+      .css("left", "25%")
+      .css("text-align", "center")
+      .css("padding", "1em")
+      .css("background-color", "white")
+      .css("border-radius", "1em")
+      .prependTo(document.body)
+      .append($("<p>").text("Downloading original version of the page..."))
+      .append($(spinner));
+    $.get(location.href, function(data){
+      popover.detach();
+      rawdocument = parser.parseFromString(data, "text/html");
+      var tagname = rawdocument.documentElement.tagName.toUpperCase();
+      var i = data.toUpperCase().indexOf("<" + tagname);
+      var j = data.toUpperCase().lastIndexOf("</" + tagname + ">");
+      if (i == -1) {
+        alert("Did not find <" + tagname + " in " + data);
+      } else if(j == -1) {
+        alert("Did not find </" + tagname + "> in " + data);
+      } else {
+        rawdocheader = data.substr(0, i);
+        rawdocfooter = data.substr(j + tagname.length + 3);
+        var imported_elems = $(rawdocument.body).children();
+        var elems = $(document.body).children().filter("[data-generated='false']");
+        if (imported_elems.length != elems.length) {
+          alert("Cannot read original file");
+          console.log(rawdocument);
+          console.log(imported_elems);
+          console.log(elems);
+        } else {
+          for(var i = 0; i < elems.length; ++i) {
+            var new_elem = $(imported_elems[i]).clone();
+            new_elem[0].__editor_backup__ = elems[i];
+            new_elem
+              .replaceAll($(elems[i]))
+              .attr("data-generated", "false");
+            $(":not([data-generated])", new_elem).attr("data-generated", "false")
+            Aloha.jQuery(new_elem).aloha();
+            new_elem[0].__editor_source__ = imported_elems[i];
+          }
+          show_edit_header();
+          $(":not([data-generated])").attr("data-generated", "true")
+        }
+      }
+    }, "text");
   }
 
-  function stop_edit(){
-    $(":not([data-generated])").attr("data-generated", "false")
-    editing.each(function(){
+  function stop_edit(save){
+    $(document.body).children().filter("[data-generated='false']").each(function(){
       Aloha.jQuery(this).mahalo().removeClass('aloha-editable-highlight');
+      if(save) {
+        var new_elem = $(this).clone();
+        $("[data-generated]", new_elem).removeAttr("data-generated");
+        $(new_elem).replaceAll(this.__editor_source__);
+      } else {
+        $(this.__editor_backup__).replaceAll(this);
+      }
     });
   }
 
@@ -124,10 +174,11 @@ jQuery(function( $ ) {
     topbar.prependTo($('body')).hide().slideDown();
   }
 
-  function hide_edit_header(){
+  function hide_edit_header(cb){
     topbar.slideUp(function(){
       topbar.detach();
       toolbar.prependTo($('body'));
+      if(cb) cb();
     });
   }
 });
