@@ -117,123 +117,114 @@ jQuery(function( $ ) {
   function start_edit(){
     show_overlay();
     var iframe_doc;
-    /*var observer = new MutationObserver(function(mutations) {
-      console.log(mutations);
-    });
-    observer.observe(iframe.contentDocument, {attributes: true, childList: true, characterData: true})*/
     $.get(window.location.href, function(data){
       iframe = $("<iframe></iframe>")
         .css("border", "none")
         .css("width", "100%")
         .css("overflow", "none")
         .attr("scrolling", "no")
+        .attr("src", window.location.href)
         .height(document.documentElement.scrollHeight - topbar.height())
-        .load(init_iframe)
         .replaceAll(iframe);
 
-      function init_iframe(){
-        var win = iframe[0].contentWindow;
-        win.location = window.location;
-        //installResizeListener(win);
-        //console.log(win);
-        /*
-        win.addResizeListener(iframe.contents()[0].body, function(){
-          resizeIframe();
-        });
-        */
+      var win = iframe[0].contentWindow;
+      win.location = location;
+      iframe_doc = iframe.contents()[0];
+      iframe_doc.write(data);
+      setTimeout(resizeIframe, 1000);
 
-        iframe_doc = iframe.contents()[0];
-        //iframe_doc.designMode = "on";
-        /*
-        iframe_doc.documentElement.watch("scrollHeight", function(property, oldHeight, newHeight) {
-          resizeIframe();
-        });
-        */
-        setTimeout(resizeIframe, 1000);
+      var loaded = false;
+      editing = $();
 
-        var loaded = false;
-        editing = $();
+      var observer = new MutationObserver(function(mutations) {
+        if(editing.length == 0) {
+          editing = $(iframe_doc.body).children().filter(":visible").filter(":not(.aloha)");
+          if(editing.length != 0) {
 
-        var observer = new MutationObserver(function(mutations) {
-          //console.log(mutations);
-          //console.log($(iframe_doc.body).children().filter(":visible").filter(":not(.aloha)"));
-          if(editing.length == 0) {
-            editing = $(iframe_doc.body).children().filter(":visible").filter(":not(.aloha)");
-            if(editing.length != 0) {
-
-              /*if($("base", iframe_doc.head).length == 0) {
-                $("<base/>")
-                  .attr("href", location.href)
-                  .appendTo(iframe_doc.head);
-              }
-              */
-              var base = location.href.replace(/\/[^\/]*$/, "/");
-              $("<script></script>")
-                .attr("type", "text/javascript")
-                .attr("src",  base + "jquery-2.1.1.min.js")
+            /*
+            $.get("jquery-2.1.1.min.js", function(data){
+              $('<script type="text/javascript"></script>')
+                .text(data)
                 .appendTo(iframe_doc.head);
-              $("<link/>")
-                .attr("rel", "stylesheet")
-                .attr("type", "text/css")
-                .attr("href",  base + "alohaeditor-1.1.0/aloha/css/aloha.css")
+            }, "text");
+            $.get("alohaeditor-1.1.0/aloha/css/aloha.css", function(data){
+              $('<style type="text/css"></style>')
+                .text(data)
                 .appendTo(iframe_doc.head);
-              $("<script></script>")
-                .attr("type", "text/javascript")
-                .attr("src",  base + "alohaeditor-1.1.0/aloha/lib/require.js")
+            }, "text");
+            $.get("alohaeditor-1.1.0/aloha/lib/require.js", function(data){
+              $('<script type="text/javascript"></script>')
+                .text(data)
                 .appendTo(iframe_doc.head);
-              $("<script></script>")
-                .attr("type", "text/javascript")
-                .attr("src",  base + "alohaeditor-1.1.0/aloha/lib/aloha.js")
+            }, "text");
+            $.get("alohaeditor-1.1.0/aloha/lib/aloha.js", function(data){
+              $('<script type="text/javascript"></script>')
                 .attr("data-aloha-plugins",  "common/ui,common/format,common/highlighteditables,common/link")
+                .text(data)
                 .appendTo(iframe_doc.head);
+            }, "text");
+            */
 
-              //console.log(editing);
-              editing.each(function(){
-                win.Aloha.jQuery(this).aloha();
-              });
-            }
+            var base = location.href.replace(/\/[^\/]*$/, "/");
+            $(iframe_doc.createElement("script"))
+              .attr("type", "text/javascript")
+              .text("Aloha = {}; Aloha.settings = { sidebar: { disabled: true } };")
+              .appendTo(iframe_doc.head);
+            $(iframe_doc.createElement("link"))
+              .attr("rel", "stylesheet")
+              .attr("type", "text/css")
+              .attr("href",  base + "alohaeditor-1.1.0/aloha/css/aloha.css")
+              .appendTo(iframe_doc.head);
+            /*
+            $(iframe_doc.createElement("script"))
+              .attr("type", "text/javascript")
+              .attr("src",  base + "jquery-2.1.1.min.js")
+              .appendTo(iframe_doc.head);
+            $(iframe_doc.createElement("script"))
+              .attr("type", "text/javascript")
+              .attr("src",  base + "alohaeditor-1.1.0/aloha/lib/require.js")
+              .appendTo(iframe_doc.head);
+            $(iframe_doc.createElement("script"))
+              .attr("type", "text/javascript")
+              .attr("src",  base + "alohaeditor-1.1.0/aloha/lib/aloha.js")
+              .attr("data-aloha-plugins",  "common/ui,common/format,common/highlighteditables,common/link")
+              .appendTo(iframe_doc.head);
+            */
+            /*
+            $(iframe_doc.createElement("script"))
+              .attr("type", "text/javascript")
+              .attr("src",  base + "alohaeditor-1.1.0/aloha/lib/aloha-full.js")
+              .attr("data-aloha-plugins",  "common/ui,common/format,common/highlighteditables,common/link")
+              .appendTo(iframe_doc.head);
+            */
+            $(iframe_doc.createElement("script"))
+              .attr("type", "text/javascript")
+              .text('"$(iframe_doc.body).children().filter(":visible").filter(":not(.aloha)").each(function(){ win.Aloha.jQuery(this).aloha(); })')
+              .appendTo(iframe_doc.head);
+
+            /*editing.each(function(){
+              win.Aloha.jQuery(this).aloha();
+            });*/
           }
-          if(!loaded && $(iframe_doc.body).height() != 0) {
-            loaded = true;
-            resizeIframe();
-          }
-        });
-        observer.observe(iframe_doc, {attributes: true, childList: true, characterData: true, subtree: true});
+        }
+        if(!loaded && $(iframe_doc.body).height() != 0) {
+          loaded = true;
+          resizeIframe();
+        }
+      });
+      observer.observe(iframe_doc, {attributes: true, childList: true, characterData: true, subtree: true});
 
-        iframe_doc.write(data);
-
-        /*editing = $(iframe_doc.body).children().filter(":visible").filter(":not(.aloha)");
-        console.log(editing);
-        editing.each(function(){
-          Aloha.jQuery(this).aloha();
-        });*/
-
-        show_edit_header(overlay);
-      }
+      show_edit_header(overlay);
     }, "text");
 
-    //setInterval(resizeIframe, 1000)
-
     function resizeIframe(){
-      //console.log("resize iframe to " + $(iframe_doc.body).height())
-      //console.log(iframe_doc);
-      //console.log(iframe_doc.documentElement.scrollHeight);
       iframe.attr("scrolling", "auto")
       iframe.height($(iframe_doc.body).height()+16);
     }
-/*
-    toolbar.detach();
-    editing = $('body').children().filter(":visible").filter(":not(.aloha)");
-    editing.each(function(){
-      Aloha.jQuery(this).aloha();
-    });
-    show_edit_header();
-    $(":not([data-generated])").attr("data-generated", "true")
-*/
   }
 
   function stop_edit(){
-    /*$(":not([data-generated])").attr("data-generated", "false")
+    /*
     editing.each(function(){
       Aloha.jQuery(this).mahalo().removeClass('aloha-editable-highlight');
     });
