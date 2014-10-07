@@ -1,0 +1,3 @@
+[submodule "Aloha-Editor"]
+	path = Aloha-Editor
+	url = git@github.com:mildred/Aloha-Editor.git

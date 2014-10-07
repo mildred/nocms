@@ -1,7 +1,34 @@
-jQuery(function( $ ) {
+/*
+Aloha.ready(function(){
+  Aloha.require(['jquery'], function($, Plugin, TopBar){
+    console.log("init edit-main");
+  });
+});
+*/
 
-  $("head script[data-requirecontext='aloha'][data-requiremodule='jquery']").attr("data-generated", "true")
-  $(":not([data-generated])").attr("data-generated", "false")
+/*
+require(['jquery', "aloha/plugin", "topbar/topbar-plugin"], function($, Plugin, TopBar){
+    console.log("init edit-main");
+});*/
+
+/*
+jQuery(function(){
+  Aloha.require([
+    "jquery", "aloha/plugin", "topbar/topbar-plugin"
+  ], function(
+    $, Plugin, TopBar
+  ){
+    console.log("init edit-main");
+  });
+});
+*/
+
+
+//jQuery(function( $ ) {
+require(["jquery", "topbar/topbar-plugin"], function($, TopBar){
+
+  $("head script[data-requirecontext='aloha'][data-requiremodule='jquery']").attr("data-generated", "true");
+  $(":not([data-generated])").attr("data-generated", "false");
 
   var spinner = '<img class="spinner" src="data:image/gif;base64,R0lGODlhEAAQAPYAAP///wAAANTU1JSUlGBgYEBAQERERG5ubqKio'+
                 'tzc3KSkpCQkJCgoKDAwMDY2Nj4+Pmpqarq6uhwcHHJycuzs7O7u7sLCwoqKilBQUF5eXr6+vtDQ0Do6OhYWFoyMjKqqqlxcXHx8fO'+
@@ -28,16 +55,46 @@ jQuery(function( $ ) {
                 'pOjwAJFkSCSyQrrhRDOYILXFSuNkpjggwtvo86H7YAZ1korkRaEYJlC3WuESxBggJLWHGGFhcIxgBvUHQyUT1GQWwhFxuFKyBPakx'+
                 'NXgceYY9HCDEZTlxA8cOVwUGBAAA7AAAAAAAAAAAA"/ alt="please wait">';
 
-  var topbar = $('<div><h1>Editing document</h1>'+
-      '<button class="save">Save</button>'+
-      '<button class="close">Close Without Saving</button>'+
-    '</div>')
-    .css('background-image', 'linear-gradient(to top, #000000 0, #EEEEEE 8px)')
-    .css('padding-top', '1em')
-    .css('padding-left', '1em')
-    .css('padding-right', '1em')
-    .css('padding-bottom', '16px');
+  / *Plugin.create("edit-whole-document", {
+    dependencies: ['topbar'],
+
+    init: function(){
+      console.log(TopBar._topbar);
+    }
+  });* /
+
+  console.log(TopBar._topbar);
+
+  //  ⬅ &#11013; ➡ &#10145; ⇦ &#8678; ⇨ &#8680;
+
+  var topbar = TopBar.element()
+    .append($('<h1>Editing document</h1>'))
+    .append($('<ul class="links"><li><button class="add">Add</button></li></ul>'))
+    .append($('<button class="save">Save</button>'))
+    .append($('<button class="close">Close Without Saving</button>'));
+
   topbar.children().filter(":first").css("margin-top", 0);
+
+  var links = $(".links", topbar);
+  var add_link = $("button.add", topbar)
+    .click(function(){
+      var line = $("<li><select></select> </li>")
+        .append($('<span class="link"><a href="">(no link)</a></span>'))
+        .insertBefore(links.children(":last"));
+      var select = $("select", line)
+        .append($("<option>").text("index"))
+        .append($("<option>").text("stylesheet"));
+      var a = $("a", line);
+
+      var observer = new MutationObserver(function(mutations) {
+        //a.text(a.attr('href'));
+        console.log("mutate")
+      });
+      console.log(a);
+      observer.observe(a[0], {attributes: true, childList: true, characterData: true, subtree: true});
+
+      Aloha.jQuery("span.link", line[0]).aloha();
+    });
 
   var toolbar = $('<div></div>')
     .css('position', 'absolute')
@@ -171,12 +228,11 @@ jQuery(function( $ ) {
   }
 
   function show_edit_header(){
-    topbar.prependTo($('body')).hide().slideDown();
+    TopBar.open();
   }
 
   function hide_edit_header(cb){
-    topbar.slideUp(function(){
-      topbar.detach();
+    TopBar.close(function(){
       toolbar.prependTo($('body'));
       if(cb) cb();
     });

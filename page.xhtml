@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="test.xsl"?>
-<html>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<!--?xml-stylesheet type="text/xsl" href="test.xsl"?-->
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <script type="text/javascript" src="edit.js"></script>
+        <meta charset="utf-8"/>
+        <!--script type="text/javascript" src="edit.js"></script-->
+        <script type="text/javascript" src="Aloha-Editor/src/lib/require.js"></script>
+        <script type="text/javascript" src="Aloha-Editor/src/lib/vendor/jquery-1.7.2.js"></script>
+        <script type="text/javascript">//<![CDATA[
+            requirejs.config({xhtml: true});
+            //var $ = jQuery;
+            //requirejs.load = function(context, moduleName, url){
+            //    console.log("Trying to load " + moduleName + " from " + context + " at location " + url);
+            //    $.getScript(url);
+            //}
+            Aloha = {
+                settings: {
+                    bundles: {
+                        edit: "../../../plugins"
+                    },
+                    sidebar: {
+                        disabled: true
+                    },
+                    requireConfig: {
+                        paths: {
+                            jquery: "../../../jquery-1.11.1"
+                        }
+                    }
+                }
+            };
+        //]]></script>
+        <script type="text/javascript" src="Aloha-Editor/src/lib/aloha.js" data-aloha-plugins="common/ui,common/format,common/link,edit/topbar,edit/edit"></script>
+        <link rel="stylesheet" href="Aloha-Editor/src/css/aloha.css" type="text/css"/>
         <link rel="alternate" href="page.html" title="HTML Version" />
         <style>
             html, body {
