@@ -5,15 +5,26 @@
     <head>
         <meta charset="utf-8"/>
         <!--script type="text/javascript" src="edit.js"></script-->
-        <script type="text/javascript" src="Aloha-Editor/src/lib/require.js"></script>
-        <script type="text/javascript" src="Aloha-Editor/src/lib/vendor/jquery-1.7.2.js"></script>
-        <script type="text/javascript">//<![CDATA[
-            requirejs.config({xhtml: true});
+        <script type="text/javascript" src="require.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            requirejs.config({
+              xhtml: true,
+              baseUrl: "Aloha-Editor/src",
+              paths: {
+                jquery: "../../jquery-2.1.1"
+              }
+            });
+
+            requirejs(['../../edit/main'], function(aloha){
+            });
+
             //var $ = jQuery;
             //requirejs.load = function(context, moduleName, url){
             //    console.log("Trying to load " + moduleName + " from " + context + " at location " + url);
             //    $.getScript(url);
             //}
+            /*
             Aloha = {
                 settings: {
                     bundles: {
@@ -29,10 +40,11 @@
                     }
                 }
             };
-        //]]></script>
-        <script type="text/javascript" src="Aloha-Editor/src/lib/aloha.js" data-aloha-plugins="common/ui,common/format,common/link,edit/topbar,edit/edit"></script>
-        <link rel="stylesheet" href="Aloha-Editor/src/css/aloha.css" type="text/css"/>
+            */
+            //]]>
+        </script>
         <link rel="alternate" href="page.html" title="HTML Version" />
+        <!--link rel="stylesheet" href="Aloha-Editor/demo/aloha-ui/css/aloha-ui.css" /-->
         <style>
             html, body {
                 padding: 0;
