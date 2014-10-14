@@ -1,0 +1,116 @@
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-style {
+  display: inline-block;
+  cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.5);
+	text-align: left;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.5);
+	vertical-align: top;
+	position: relative;
+  overflow: hidden;
+  padding: 0.2em;
+  margin: 1px;
+
+  /* height should be 4em including padding and border */
+  /* width should be 6em including padding and border */
+  height: 3.5375em; /* 1em = 16px */
+  width:  5.5375em; /* 1em = 16px */
+  height: calc(4em - 0.4em - 2px);
+  width:  calc(6em - 0.4em - 2px);
+}
+
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-styles-expand-collapse {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0.2em;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 1px;
+  
+  line-height: 3.5375em; /* 1em = 16px */
+  height:      3.5375em; /* 1em = 16px */
+  line-height: calc(4em - 0.4em - 2px);
+  height:      calc(4em - 0.4em - 2px);
+}
+
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-style > div {
+  position: absolute;
+  bottom: 0;
+  overflow: hidden;
+  
+  width:  5.5375em; /* 1em = 16px */
+  width:  calc(6em - 0.4em - 2px);
+}
+
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-style > div > div:nth-child(1) {
+  position: relative;
+  background-color: white;
+  height: 2.7em;
+}
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-style > div > div:nth-child(1) > *:nth-child(1) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+}
+
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-style > div > div:nth-child(2) {
+  height: 1em;
+  overflow: hidden;
+  margin-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.aloha-edit-toolbar .aloha-edit-styles .aloha-edit-style > div > div:nth-child(2) > *:nth-child(1) {
+  font-size: 0.7em;
+}
+
+
+# First style
+.aloha-edit-toolbar .aloha-edit-styles > .aloha-edit-style {
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+.aloha-edit-toolbar .aloha-edit-toolbar-2row {
+  display: inline-block;
+  vertical-align: top;
+
+  height: 3.5375em; /* 1em = 16px */
+  height: calc(4em - 0.4em - 2px);
+}
+
+.aloha-edit-toolbar .aloha-edit-toolbar-2row .aloha-edit-toolbar-smallbtn {
+  font-size: 1em; /* reset em unit */
+  padding: 0;
+  display: inline-block;
+  cursor: pointer;
+  
+  overflow: hidden;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.5);
+	vertical-align: top;
+	background-color: rgba(255, 255, 255, 0.5);
+  margin: 1px;
+
+  /* seems like all browsers use old IE box model for <button> (or perhaps the
+   * inline-block box model). Change the box model using box-sizing property.
+   * http://www.cssnewbie.com/button-height-and-a-broken-box-model/
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing
+   */
+	        box-sizing: content-box;
+     -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+
+  /* height should be 2em-1px including padding and border */
+  /* width should be 2em-1px including padding and border */
+	height: 29px; /* 1em = 16px */
+	width:  29px; /* 1em = 16px */
+	height: calc(2em - 1px - 2px);
+	width:  calc(2em - 1px - 2px);
+	
+}
+

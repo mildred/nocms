@@ -4,7 +4,7 @@ define([], function(){
     on_click = on_click.bind(this);
 
     this.toolbar = $('<div></div>')
-      .css('position', 'absolute')
+      .css('position', 'fixed')
       .css('right', 0)
       .css('top', 0);
 

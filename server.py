@@ -19,6 +19,13 @@ class HTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             with open(path, 'wb') as f:
                 f.write(self.rfile.read(length))
             self.send_response(201, "Created")
+    
+    #def end_headers(self):
+    #    if not self.path.endswith('?edit'):
+    #        # This is a good start, but it doesn't prevent all javascript. Page
+    #        # loaded in an iframe will have javascript enabled.
+    #        self.send_header("Content-Security-Policy", "script-src 'none'; object-src 'none';")
+    #    return http.server.SimpleHTTPRequestHandler.end_headers(self)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
