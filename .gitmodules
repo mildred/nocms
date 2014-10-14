@@ -1,0 +1,4 @@
+[submodule "howling-mad"]
+	path = howling-mad
+	url = https://github.com/mildred/nocms.git
+	branch = howling-mad
