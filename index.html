@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Nocms by mildred</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Nocms</h1>
+        <p>Edit webpages without server-side CMS. Only a JavaScript editor and HTTP PUT requests.</p>
+
+        <p class="view"><a href="https://github.com/mildred/nocms">View the Project on GitHub <small>mildred/nocms</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/mildred/nocms/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/mildred/nocms/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/mildred/nocms">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="nocms-transform-your-browser-into-a-website-editor" class="anchor" href="#nocms-transform-your-browser-into-a-website-editor"><span class="octicon octicon-link"></span></a>nocms: transform your browser into a website editor</h1>
+
+<p><a href="https://rawgit.com/mildred/nocms/howling-mad/page-xhtml.html">Demo</a> (would work
+if github could serve raw files with any content type, if only with a query
+string <code>?content-type=text/html</code>, and followed submodules).</p>
+
+<p>Project goals:</p>
+
+<ul>
+<li>create a HTML WYSIWYG/M editor in JavaScript that run in your browser</li>
+<li>do not require server-side specific code. This should run on any dumb HTTP
+server that allow write access using PUT queries. In the long term, this
+should allow hosting on a webserver implementing the ipns distributed
+filesystem.</li>
+<li>be powerful enough to create a blog. Create new pages / posts. Aggregate them
+to the main page (using the <code>&lt;link&gt;</code> tag) and let the main page generate
+seamless <code>&lt;iframes&gt;</code> for each post we have.</li>
+<li>do not require JavaScript for normal users (not using the editor). XSLT can be
+used instead to aggregate posts in the front page. This improve the user's
+privacy.</li>
+<li>This should also allow for user comments. Comments would be standalone pages
+hosted on the comment author's namespace on ipns. The comment would contain a
+link to the original article, and would publish a backlink using some global
+mechanism.</li>
+<li>Comments could be displayed on the original article the following ways:
+
+<ul>
+<li>the original article's author validates comments manually and put a
+backlink (<code>&lt;link rev&gt;</code>) on the article <code>&lt;head&gt;</code>, and use a XSLT stylesheet
+to generate iframes on the page body to show comments.</li>
+<li>use of JavaScript (unfortunately) to query the distributed backlink
+storage and show the comments</li>
+<li>use a browser extension for that.</li>
+</ul>
+</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/mildred">mildred</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
