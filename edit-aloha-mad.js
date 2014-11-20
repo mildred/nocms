@@ -2,6 +2,7 @@ requirejs.config({
   xhtml: true,
   baseUrl: "Aloha-Editor/src",
   paths: {
+    text:   "../../text",
     jquery: "../../jquery-2.1.1"
   }
 });

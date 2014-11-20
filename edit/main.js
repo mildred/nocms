@@ -1,5 +1,5 @@
-define(["jquery", "require", "aloha", "./spinner", "./topbar", "./pencil", "./ui", "./input", './linkui'],
-function($, require, aloha, spinner, TopBar, Pencil, ui, Input, linkui){
+define(["jquery", "require", "aloha", "./spinner", "./topbar", "./pencil", "./ui", "./input", './linkui', "text!./style.css"],
+function($, require, aloha, spinner, TopBar, Pencil, ui, Input, linkui, style_css){
 
   'use strict';
   
@@ -212,10 +212,16 @@ function($, require, aloha, spinner, TopBar, Pencil, ui, Input, linkui){
   }
   */
   
+  /*
   var stylesheet = $('<link>')
     .attr('rel', 'stylesheet')
     .attr('type', 'text/css')
     .attr('href', require.toUrl("./style.css"));
+  */
+
+  var stylesheet = $("<style>")
+    .attr('type', 'text/css')
+    .text(style_css);
 
   function show_edit_header(){
     pencil.hide();
