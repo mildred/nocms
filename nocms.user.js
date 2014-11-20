@@ -5,17 +5,21 @@
 // @include       *
 // @require       require.js
 // @require       nocms.deps.js
+// @require       jquery-2.1.1.js
 // @version       1.0
 // @grant         none
 // ==/UserScript==
 
 try {
 
-console.log("nocms.user.js");
+  console.log("nocms.user.js");
 
-requirejs(['edit/main'], function(aloha){
-  console.log("main loaded");
-});
+  var $ = jQuery.noConflict(true);
+  define("jquery", [], function($){ return $; });
+
+  requirejs(['edit/main'], function(aloha){
+    console.log("main loaded");
+  });
 
 
 } catch(e) {
